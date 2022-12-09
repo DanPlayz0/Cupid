@@ -23,7 +23,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    const embed = new ctx.MessageEmbed().setColor('Blurple');
+    const embed = new ctx.MessageEmbed().setColor('#800302');
       
     if (ctx.args.getString('command')) return this.commandInfo(ctx, ctx.args.getString('command'), embed);
 
@@ -32,7 +32,7 @@ module.exports = class extends Command {
     embed
       .setAuthor({ name: ctx.client.user.username, iconURL: ctx.client.user.displayAvatarURL({ dynamic: true, format: 'png' }) })
       .setDescription(`You can do \`${ctx.prefix}help [command]\` for more info on a command\nYou can also join the [support server](${ctx.client.config.supportServerInvite}) for more information.`)
-      .setFields(categories.map((x) => ({ name: `➤ ${x.toProperCase()}`, value: ctx.client.commands.filter(m => m.conf.category == x).map(m => `\`${m.commandData.name}\``).join(' ') || 'None', inline: false
+      .setFields(categories.map((x) => ({ name: `${x.toProperCase()}`, value: ctx.client.commands.filter(m => m.conf.category == x).map(m => `\`${m.commandData.name}\``).join(' ') || 'None', inline: false
       })))
     ctx.sendMsg(embed)
   }

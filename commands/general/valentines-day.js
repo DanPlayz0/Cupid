@@ -19,6 +19,6 @@ module.exports = class extends Command {
     else year = currentDate.getFullYear()
 
     const date = new Date(`${year}-02-14`);
-    ctx.sendMsg(`There is ${Math.round((date.getTime() - Date.now()) / 86400000)} days before Valentine's Day. <t:${date.getTime()/1000}:R>`);
+    ctx.sendMsg(`There is ${Math.round((date.getTime() - Date.now()) / 86400000)} days before Valentine's Day (<t:${date.getTime()/1000}:R>)`);
   }
 };
