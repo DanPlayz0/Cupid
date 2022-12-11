@@ -42,7 +42,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    const ideaNumber = ctx.args.getInteger('idea') ?? Math.floor(Math.random() * romanticIdeas.length);
-    ctx.sendMsg(`**#${ideaNumber}:** ${romanticIdeas[ideaNumber]}`) 
+    const ideaNumber = ctx.args.getInteger('idea') ?? (Math.floor(Math.random() * romanticIdeas.length)+1);
+    ctx.sendMsg(`**#${ideaNumber}:** ${romanticIdeas[ideaNumber-1]}`) 
   }
 };
