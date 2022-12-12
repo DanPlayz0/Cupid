@@ -63,7 +63,7 @@ module.exports = class extends Command {
     const anagramEmbed = new ctx.EmbedBuilder()
       .setTitle("Anagram")
       .setDescription(`Unscramble the word. The word will be revealed in <t:${Math.floor(timeLeft/1000)}:R>`)
-      .setColor('#800302')
+      .setColor('#E6ACB6')
       .setImage(`attachment://word-${shuffled.replace(/ +/g,'')}.png`)
 
     const msg = await ctx.sendMsg({

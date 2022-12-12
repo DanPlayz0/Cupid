@@ -23,7 +23,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    const embed = new ctx.MessageEmbed().setColor('#800302');
+    const embed = new ctx.MessageEmbed().setColor('#E6ACB6');
       
     if (ctx.args.getString('command')) return this.commandInfo(ctx, ctx.args.getString('command'), embed);
 
