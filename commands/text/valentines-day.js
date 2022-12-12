@@ -5,7 +5,7 @@ module.exports = class extends Command {
     super(client, {
       enabled: true,
       description: "How many days until Valentine's Day.",
-      category: "General",
+      category: "Text",
     });
   }
 
