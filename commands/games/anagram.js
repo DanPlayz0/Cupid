@@ -11,10 +11,14 @@ const words = [
   "rose", "gift", "kiss", "red", "sweetheart",
   "romantic", "date", "dinner", "flowers", "candy",
   "teddy bear", "perfume", "soulmate", "lovebirds", "dance",
-  "affair", "notes", "promise", "fire",
-  "poppy", "lock", "language", "kind", "selfless", "passionate",
-  "forever", "choice", "battlefield", "mystery", "treasure",
-  "journey"
+  "affair", "lovenote", "promise", "fire",
+  "poppy", "kind", "selfless", "passionate",
+  "forever", "treasure", "journey",
+  "admirer", "adore", "affection", "darling", "desire",
+  "endearment", "fiance", "flirt", "friend", "girlfriend",
+  "boyfriend", "holiday", "like", "moonstruck", "party",
+  "passion", "pink", "presents", "present", "smitten",
+  "sweets", "sweet", "lolipop", "tulips", "woo", "yearning",
 ];
 
 module.exports = class extends Command {
@@ -40,7 +44,15 @@ module.exports = class extends Command {
     let anagramWord = ctx.args.getString('word');
     anagramWord = anagramWord ?? words[Math.floor(Math.random() * words.length)];
     
-    const scramble = (word) => word.split(" ").map(v=>v.split("").sort(() => Math.random() - 0.5).join("")).join(" ");
+    const scramble = (word) => {
+      const words = word.split(" ");
+      if(words.length == 1) {
+        let newWord = word;
+        if(word.length != 1) while (newWord == word) newWord = word.split("").sort(() => Math.random() - 0.5).join("");
+        return newWord;
+      }
+      return word.split(" ").map(v=>scramble(v)).join(" ");
+    }
 
     let shuffled = anagramWord;
     while (shuffled == anagramWord) shuffled = scramble(shuffled);
@@ -118,7 +130,7 @@ module.exports = class extends Command {
                 type: 4,
                 style: 1,
                 custom_id: "guess",
-                label: "What do you think the word is? (CaSe-Sensitive)",
+                label: "What do you think the word is?",
                 placeholder: "word",
                 min_length: 1,
                 max_length: 100,
@@ -138,7 +150,7 @@ module.exports = class extends Command {
             modalInteraction.deferUpdate();
             collector.stop("success");
           }
-        })
+        }).catch(() => {})
     })
   }
 };
