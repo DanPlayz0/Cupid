@@ -33,6 +33,7 @@ module.exports = class extends Command {
     let image1Url = ctx.args.getString('image_url') || ctx.args.getAttachment('image')?.url || ctx.args.getUser("image_user")?.avatarURL({ extension: "png", forceStatic: true });
     if(!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
     if(!['png', 'jpg', 'jpeg'].some(x=>image1Url.includes('.'+x))) return ctx.sendMsg("Both images must be either `png` or `jpg`");
+    const msg = await ctx.sendMsg("Generating...")
 
     let timeTest = Date.now()
     const image1 = await Canvas.loadImage(image1Url);
@@ -45,12 +46,31 @@ module.exports = class extends Command {
       image.composite(frame);
       frames.push(Frame.from(image, 25, 0, 0, Frame.DISPOSAL_BACKGROUND));
     }
-
     timeTest = Date.now() - timeTest
 
+    let GIFimage = new GIF([...frames]);
+    let finalImage = null, lastSize = 0, skip = 0;
+    for (let quality of [100, 95, 85, 75, 70, 65, 60, 55, 50]) {
+      if (skip > 0) { skip--; continue; }
+
+      let image = await GIFimage.encode(quality);
+      lastSize = Buffer.from(image).byteLength /1024/1000
+      console.log(quality, lastSize)
+
+      if (lastSize >= 10) skip = 2;
+      else if (lastSize >= 9) skip = 1;
+      
+      if(lastSize < 8) {
+        finalImage = image;
+        break;
+      }
+    }
+    if(finalImage == null) return ctx.sendMsg({ content: "Generated Image was too big to send. Try with another image", message: msg });
+    
+
     return ctx.sendMsg({content: `Generated in ${timeTest} ms`, files:[
-      {name: 'hearts.gif', attachment: Buffer.from(await new GIF([...frames]).encode(100)) }
-    ]})
+      {name: 'hearts.gif', attachment: Buffer.from(finalImage) }
+    ], message:msg})
   }
 } 
 
