@@ -54,8 +54,7 @@ module.exports = class extends Command {
       if (skip > 0) { skip--; continue; }
 
       let image = await GIFimage.encode(quality);
-      lastSize = Buffer.from(image).byteLength /1024/1000
-      console.log(quality, lastSize)
+      lastSize = Buffer.from(image).byteLength /1024/1000;
 
       if (lastSize >= 10) skip = 2;
       else if (lastSize >= 9) skip = 1;
