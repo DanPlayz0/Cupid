@@ -37,10 +37,10 @@ module.exports = class extends Command {
           required: true,
           choices: [
             { name: 'Sandbox', value: 'sandbox' },
-						{ name: 'Easy', value: 'easy' },
-						{ name: 'Normal', value: 'normal' },
-						{ name: 'Hard', value: 'hard' },
-						{ name: 'Expert', value: 'expert' },
+            { name: 'Easy', value: 'easy' },
+            { name: 'Normal', value: 'normal' },
+            { name: 'Hard', value: 'hard' },
+            { name: 'Expert', value: 'expert' },
           ]
         },
       ],
@@ -67,7 +67,7 @@ module.exports = class extends Command {
     const embed = new ctx.EmbedBuilder()
       .setTitle("Memory Match")
       .setColor("Orange")
-      .setDescription(`A classic game where the goal is to find pairs of matching cards by turning them over and remembering their locations.\n\nGame ends <t:${Math.floor((Date.now()+gameTime)/1000)}:R>`);
+      .setDescription(`A classic game where the goal is to find pairs of matching cards by turning them over and remembering their locations.\n\nGame ends <t:${Math.floor((Date.now() + gameTime) / 1000)}:R>`);
     const msg = await ctx.interaction.editReply({
       embeds: [embed],
       components: componentsArray
@@ -96,7 +96,7 @@ module.exports = class extends Command {
         embed2 = new ctx.EmbedBuilder()
           .setTitle("Nice job")
           .setColor("Green")
-          .setDescription(`You successfully finished with ${triesLeft} match attempt${triesLeft == 1 ? "" : "s"} and ${Math.round((timeLeft - Date.now()) / 1000) % 60 == 0 ? `${Math.round((timeLeft - Date.now()) / 1000)} seconds` : `${(Math.round((timeLeft - Date.now()) / 1000)/60).toFixed(1)} minutes`} seconds left`);
+          .setDescription(`You successfully finished with ${triesLeft} match attempt${triesLeft == 1 ? "" : "s"} and ${Math.round((timeLeft - Date.now()) / 1000) % 60 == 0 ? `${Math.round((timeLeft - Date.now()) / 1000)} seconds` : `${(Math.round((timeLeft - Date.now()) / 1000) / 60).toFixed(1)} minutes`} seconds left`);
 
         return msg.edit({ embeds: [embed, embed2], components: componentsArray, });
       }
@@ -104,9 +104,9 @@ module.exports = class extends Command {
     });
 
     let lastSelected = null;
-    let logicArray = Array.from({ length: hidingSpots/2 }, (_,i) => i+1);
+    let logicArray = Array.from({ length: hidingSpots / 2 }, (_, i) => i + 1);
 
-    
+
     const emojiArray = [
       "heart1:1051760811795824721", "heart2:1051760814308208711", "heart3:1051760815755231293",
       "heart4:1051760819349766215", "heart5:1051760818028544030", "heart6:1051760820922617906",
@@ -121,16 +121,16 @@ module.exports = class extends Command {
     }
     const disableComponent = (row, col, id) => {
       componentsArray[row].components[col].disabled = true;
-      emojiComponent(row,col,id);
+      emojiComponent(row, col, id);
     }
-    const emojiComponent = (row,col,id) => {
-      const emoji = emojiArray[logicArray[id]-1].split(':');
+    const emojiComponent = (row, col, id) => {
+      const emoji = emojiArray[logicArray[id] - 1].split(':');
       componentsArray[row].components[col].emoji = { name: emoji[0], id: emoji[1] };
     }
 
     let canAction = true, matched = 0;
     collector.on("collect", (interaction) => {
-      if (!canAction) return interaction.reply({content: "Slow down! Try again in a second or two.", ephemeral: true})
+      if (!canAction) return interaction.reply({ content: "Slow down! Try again in a second or two.", ephemeral: true })
       interaction.deferUpdate();
 
       if (!lastSelected) {
@@ -144,8 +144,8 @@ module.exports = class extends Command {
           matched += 1;
           disableComponent(currentId[1], currentId[2], currentId[3]);
           disableComponent(lastId[1], lastId[2], lastId[3]);
-          
-          if (matched >= logicArray.length/2) return collector.stop("success");
+
+          if (matched >= logicArray.length / 2) return collector.stop("success");
         } else {
           // console.log(currentId.slice(1));
           emojiComponent(...currentId.slice(1));
@@ -161,7 +161,7 @@ module.exports = class extends Command {
         lastSelected = null;
       }
       interaction.message.edit({ components: componentsArray });
-      
+
 
       // const [ri, ti] = interaction.customId.split("_").slice(1);
 
@@ -190,15 +190,15 @@ module.exports = class extends Command {
 };
 
 function shuffle(array) {
-	const arr = [...array];
+  const arr = [...array];
 
-	for (let index = arr.length - 1; index > 0; index--) {
-		const ri = Math.floor(Math.random() * (index + 1));
-		const original = arr[index];
+  for (let index = arr.length - 1; index > 0; index--) {
+    const ri = Math.floor(Math.random() * (index + 1));
+    const original = arr[index];
 
-		arr[index] = arr[ri];
-		arr[ri] = original;
-	}
+    arr[index] = arr[ri];
+    arr[ri] = original;
+  }
 
-	return arr;
+  return arr;
 }

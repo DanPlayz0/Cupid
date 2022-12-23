@@ -6,7 +6,7 @@ Canvas.registerFont(require('path').join(process.cwd(), "assets", "fonts", "Retr
 })
 
 const words = [
-  "love", "heart", "cupid", 
+  "love", "heart", "cupid",
   "valentine", "romance", "chocolate",
   "rose", "gift", "kiss", "red", "sweetheart",
   "romantic", "date", "dinner", "flowers", "candy",
@@ -43,15 +43,15 @@ module.exports = class extends Command {
   async run(ctx) {
     let anagramWord = ctx.args.getString('word');
     anagramWord = anagramWord ?? words[Math.floor(Math.random() * words.length)];
-    
+
     const scramble = (word) => {
       const words = word.split(" ");
-      if(words.length == 1) {
+      if (words.length == 1) {
         let newWord = word;
-        if(word.length != 1) while (newWord == word) newWord = word.split("").sort(() => Math.random() - 0.5).join("");
+        if (word.length != 1) while (newWord == word) newWord = word.split("").sort(() => Math.random() - 0.5).join("");
         return newWord;
       }
-      return word.split(" ").map(v=>scramble(v)).join(" ");
+      return word.split(" ").map(v => scramble(v)).join(" ");
     }
 
     let shuffled = anagramWord;
@@ -62,21 +62,21 @@ module.exports = class extends Command {
 
     context.font = "48px Retrcade";
     const measuredScrambledWord = context.measureText(shuffled);
-    
-    canvas.width = (measuredScrambledWord.actualBoundingBoxLeft + measuredScrambledWord.actualBoundingBoxRight)+40;
-    canvas.height = (measuredScrambledWord.actualBoundingBoxDescent + measuredScrambledWord.actualBoundingBoxAscent)+30;
+
+    canvas.width = (measuredScrambledWord.actualBoundingBoxLeft + measuredScrambledWord.actualBoundingBoxRight) + 40;
+    canvas.height = (measuredScrambledWord.actualBoundingBoxDescent + measuredScrambledWord.actualBoundingBoxAscent) + 30;
 
     context.font = "48px Retrcade";
-    context.fillText(shuffled, 20, canvas.height-15, canvas.width-20);
-    
+    context.fillText(shuffled, 20, canvas.height - 15, canvas.width - 20);
+
     let gameTime = 300_000
     const timeLeft = Date.now() + gameTime;
 
     const anagramEmbed = new ctx.EmbedBuilder()
       .setTitle("Anagram")
-      .setDescription(`Unscramble the word. The word will be revealed in <t:${Math.floor(timeLeft/1000)}:R>`)
+      .setDescription(`Unscramble the word. The word will be revealed in <t:${Math.floor(timeLeft / 1000)}:R>`)
       .setColor('#E6ACB6')
-      .setImage(`attachment://word-${shuffled.replace(/ +/g,'')}.png`)
+      .setImage(`attachment://word-${shuffled.replace(/ +/g, '')}.png`)
 
     const msg = await ctx.sendMsg({
       embeds: [anagramEmbed],
@@ -84,9 +84,11 @@ module.exports = class extends Command {
         { name: `word-${shuffled.replace(/[^a-zA-Z0-9]/g, '')}.png`, attachment: canvas.toBuffer() },
       ],
       components: [
-        {type: 1, components: [
-          {type: 2, style: 2, custom_id: "anagram_openModel", label: "Guess"}
-        ]}
+        {
+          type: 1, components: [
+            { type: 2, style: 2, custom_id: "anagram_openModel", label: "Guess" }
+          ]
+        }
       ]
     });
 
@@ -112,7 +114,7 @@ module.exports = class extends Command {
         embed2 = new ctx.EmbedBuilder()
           .setTitle("Nice job")
           .setColor("Green")
-          .setDescription(`You successfully guessed the word \`${anagramWord}\` with ${triesLeft == 3 ? 'all ' :''}${triesLeft} guess${triesLeft == 1 ? "" : "es"} and ${Math.round((timeLeft - Date.now()) / 1000) % 60 == 0 ? `${Math.round((timeLeft - Date.now()) / 1000)} seconds` : `${(Math.round((timeLeft - Date.now()) / 1000)/60).toFixed(1)} minutes`} left`);
+          .setDescription(`You successfully guessed the word \`${anagramWord}\` with ${triesLeft == 3 ? 'all ' : ''}${triesLeft} guess${triesLeft == 1 ? "" : "es"} and ${Math.round((timeLeft - Date.now()) / 1000) % 60 == 0 ? `${Math.round((timeLeft - Date.now()) / 1000)} seconds` : `${(Math.round((timeLeft - Date.now()) / 1000) / 60).toFixed(1)} minutes`} left`);
 
       anagramEmbed.setDescription("Unscramble the word.");
       msg.edit({ embeds: [anagramEmbed, embed2], components: [], });
@@ -126,17 +128,17 @@ module.exports = class extends Command {
         components: [{
           type: 1,
           components: [
-              {
-                type: 4,
-                style: 1,
-                custom_id: "guess",
-                label: "What do you think the word is?",
-                placeholder: "word",
-                min_length: 1,
-                max_length: 100,
-              }
-            ]
-          }
+            {
+              type: 4,
+              style: 1,
+              custom_id: "guess",
+              label: "What do you think the word is?",
+              placeholder: "word",
+              min_length: 1,
+              max_length: 100,
+            }
+          ]
+        }
         ]
       })
       interaction.awaitModalSubmit({ filter: (mInter) => mInter.customId === modalId, time: timeLeft - Date.now() })
@@ -144,13 +146,13 @@ module.exports = class extends Command {
           const guessedWord = [...modalInteraction.fields.fields.values()][0].value;
           if (guessedWord != anagramWord) {
             triesLeft -= 1;
-            modalInteraction.reply({ content: `Incorrect guess. You have ${triesLeft == 0 ? 'no' : triesLeft} guesses left.`, ephemeral: true})
+            modalInteraction.reply({ content: `Incorrect guess. You have ${triesLeft == 0 ? 'no' : triesLeft} guesses left.`, ephemeral: true })
             if (triesLeft <= 0) collector.stop("fail");
           } else if (guessedWord == anagramWord) {
             modalInteraction.deferUpdate();
             collector.stop("success");
           }
-        }).catch(() => {})
+        }).catch(() => { })
     })
   }
 };

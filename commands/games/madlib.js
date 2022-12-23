@@ -46,8 +46,8 @@ module.exports = class extends Command {
           description: "The story to use.",
           type: 3,
           required: true,
-          choices: Object.entries(stories).map(([customId,customValue], index) => ({
-            name: `#${index+1} - ${customValue.name}`, value: customId
+          choices: Object.entries(stories).map(([customId, customValue], index) => ({
+            name: `#${index + 1} - ${customValue.name}`, value: customId
           }))
         },
         {
@@ -68,8 +68,8 @@ module.exports = class extends Command {
   async run(ctx) {
     const storyArg = ctx.args.getString('story')
     const story = stories[storyArg];
-    if(ctx.args.getString('action') == "preview") 
-      return ctx.sendMsg(story.text.replace(/(\[[^\]]+\])/g, '__**$1**__'), {ephemeral: true});
+    if (ctx.args.getString('action') == "preview")
+      return ctx.sendMsg(story.text.replace(/(\[[^\]]+\])/g, '__**$1**__'), { ephemeral: true });
 
     ctx.interaction.showModal({
       title: story.name,
@@ -93,10 +93,10 @@ module.exports = class extends Command {
 
   async runStory(ctx) {
     const story = stories[ctx.interaction.customId.split('_')[1]];
-    if (!story) return ctx.sendMsg("That story seems to have been deleted or no longer exists.", {ephemeral:true})
-    
+    if (!story) return ctx.sendMsg("That story seems to have been deleted or no longer exists.", { ephemeral: true })
+
     let storyText = story.text;
-    for (let field of ctx.interaction.fields.fields.values()) 
+    for (let field of ctx.interaction.fields.fields.values())
       storyText = storyText.replaceAll(`[${field.customId}]`, `__${field.value}__`);
 
     ctx.sendMsg(storyText);

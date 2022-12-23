@@ -31,8 +31,8 @@ module.exports = class extends Command {
 
   async run(ctx) {
     let image1Url = ctx.args.getString('image_url') || ctx.args.getAttachment('image')?.url || ctx.args.getUser("image_user")?.avatarURL({ extension: "png", forceStatic: true });
-    if(!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
-    if(!['png', 'jpg', 'jpeg'].some(x=>image1Url.includes('.'+x))) return ctx.sendMsg("Both images must be either `png` or `jpg`");
+    if (!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
+    if (!['png', 'jpg', 'jpeg'].some(x => image1Url.includes('.' + x))) return ctx.sendMsg("Both images must be either `png` or `jpg`");
     const msg = await ctx.sendMsg("Generating...")
 
     let timeTest = Date.now()
@@ -55,27 +55,29 @@ module.exports = class extends Command {
       if (skip > 0) { skip--; continue; }
 
       let image = await GIFimage.encode(quality);
-      lastSize = Buffer.from(image).byteLength /1024/1000;
+      lastSize = Buffer.from(image).byteLength / 1024 / 1000;
 
       if (lastSize >= 10) skip = 2;
       else if (lastSize >= 9) skip = 1;
-      
-      if(lastSize < 8) {
+
+      if (lastSize < 8) {
         finalImage = image;
         break;
       }
     }
     qualityFind = Date.now() - qualityFind;
-    if(finalImage == null) return ctx.sendMsg({ content: "Generated Image was too big to send. Try with another image", message: msg });
+    if (finalImage == null) return ctx.sendMsg({ content: "Generated Image was too big to send. Try with another image", message: msg });
 
-    return ctx.sendMsg({content: `Generated in ${timeTest} ms | Quality in ${qualityFind} ms`, files:[
-      {name: 'hearts.gif', attachment: Buffer.from(finalImage) }
-    ], message:msg})
+    return ctx.sendMsg({
+      content: `Generated in ${timeTest} ms | Quality in ${qualityFind} ms`, files: [
+        { name: 'hearts.gif', attachment: Buffer.from(finalImage) }
+      ], message: msg
+    })
   }
-} 
+}
 
-function createFancyImage (image) {
-  const canvas = Canvas.createCanvas(500,500), context = canvas.getContext("2d");
+function createFancyImage(image) {
+  const canvas = Canvas.createCanvas(500, 500), context = canvas.getContext("2d");
   let spawnAmount = 100, items = [];
   for (var i = 0; i < spawnAmount; i++) {
     items.push({
@@ -89,15 +91,15 @@ function createFancyImage (image) {
   const heart = createHeart();
   function drawFlakes() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(image, 0,0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
     context.globalAlpha = 0.7;
     for (var i = 0; i < spawnAmount; i++) {
-      var f = items[i], radius = f.r*3;
+      var f = items[i], radius = f.r * 3;
       context.drawImage(heart, f.x, f.y, radius, radius);
     }
     context.globalAlpha = 1;
     moveFlakes();
-    return {buffer: canvas.toBuffer(), width: canvas.width, height: canvas.height}
+    return { buffer: canvas.toBuffer(), width: canvas.width, height: canvas.height }
   }
 
   let angle = 0;
@@ -119,20 +121,20 @@ function createFancyImage (image) {
   return generated;
 }
 
-function createHeart () {
-  const canvas = Canvas.createCanvas(202,202), context = canvas.getContext("2d");
+function createHeart() {
+  const canvas = Canvas.createCanvas(202, 202), context = canvas.getContext("2d");
   const size = 200; // Heart size
   const offset = 1; // Distance from wall
-  
-  context.moveTo(offset, offset + size/ 4);
-  context.quadraticCurveTo(offset, offset, offset + size/ 4, offset);
-  context.quadraticCurveTo(offset + size/ 2, offset, offset + size/ 2, offset + size/ 4);
-  context.quadraticCurveTo(offset + size/ 2, offset, offset + size* 3/4, offset);
-  context.quadraticCurveTo(offset + size, offset, offset + size, offset + size/ 4);
-  context.quadraticCurveTo(offset + size, offset + size/ 2, offset + size* 3/4, offset + size* 3/4);
-  context.lineTo(offset + size/ 2, offset + size);
-  context.lineTo(offset + size/ 4, offset + size* 3/4);
-  context.quadraticCurveTo(offset, offset + size/ 2, offset, offset + size/ 4);
+
+  context.moveTo(offset, offset + size / 4);
+  context.quadraticCurveTo(offset, offset, offset + size / 4, offset);
+  context.quadraticCurveTo(offset + size / 2, offset, offset + size / 2, offset + size / 4);
+  context.quadraticCurveTo(offset + size / 2, offset, offset + size * 3 / 4, offset);
+  context.quadraticCurveTo(offset + size, offset, offset + size, offset + size / 4);
+  context.quadraticCurveTo(offset + size, offset + size / 2, offset + size * 3 / 4, offset + size * 3 / 4);
+  context.lineTo(offset + size / 2, offset + size);
+  context.lineTo(offset + size / 4, offset + size * 3 / 4);
+  context.quadraticCurveTo(offset, offset + size / 2, offset, offset + size / 4);
 
   context.fillStyle = "red";
   context.save();

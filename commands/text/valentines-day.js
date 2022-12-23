@@ -13,12 +13,12 @@ module.exports = class extends Command {
     const currentDate = new Date();
 
     let year = currentDate.getFullYear()
-    if(currentDate.getMonth() == 2 && currentDate.getDate() < 14) year = currentDate.getFullYear();
-    else if (currentDate.getMonth() == 2 && currentDate.getDate() > 14) year = currentDate.getFullYear()+1;
-    else if (currentDate.getMonth() > 2) year = currentDate.getFullYear()+1
+    if (currentDate.getMonth() == 2 && currentDate.getDate() < 14) year = currentDate.getFullYear();
+    else if (currentDate.getMonth() == 2 && currentDate.getDate() > 14) year = currentDate.getFullYear() + 1;
+    else if (currentDate.getMonth() > 2) year = currentDate.getFullYear() + 1
     else year = currentDate.getFullYear()
 
     const date = new Date(`${year}-02-14`);
-    ctx.sendMsg(`There is ${Math.round((date.getTime() - Date.now()) / 86400000)} days before Valentine's Day (<t:${date.getTime()/1000}:R>)`);
+    ctx.sendMsg(`There is ${Math.round((date.getTime() - Date.now()) / 86400000)} days before Valentine's Day (<t:${date.getTime() / 1000}:R>)`);
   }
 };

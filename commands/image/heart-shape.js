@@ -43,8 +43,8 @@ module.exports = class extends Command {
 
   async run(ctx) {
     let image1Url = ctx.args.getString('image1_url') || ctx.args.getAttachment('image1')?.url || ctx.args.getUser("image1_user")?.avatarURL({ extension: "png", forceStatic: true });
-    if(!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
-    if(!['png', 'jpg', 'jpeg', 'gif'].some(x=>image1Url.includes('.'+x))) return ctx.sendMsg("The image must be either `png` or `jpg` or `gif`");
+    if (!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
+    if (!['png', 'jpg', 'jpeg', 'gif'].some(x => image1Url.includes('.' + x))) return ctx.sendMsg("The image must be either `png` or `jpg` or `gif`");
 
     const image1 = await Canvas.loadImage(image1Url);
     const heart1 = createHeart(image1);
@@ -62,31 +62,33 @@ module.exports = class extends Command {
         "blue": "0000FF",
         "green": "00FF00",
       }
-      context.fillStyle = "#"+colors[backgroundColor];
-      context.fillRect(0,0,canvas.width,canvas.height)
+      context.fillStyle = "#" + colors[backgroundColor];
+      context.fillRect(0, 0, canvas.width, canvas.height)
     }
-    context.drawImage(heart1,0,0);
+    context.drawImage(heart1, 0, 0);
 
-    return ctx.sendMsg({files:[
-      {name: 'ship.png', attachment: canvas.toBuffer() }
-    ]})
+    return ctx.sendMsg({
+      files: [
+        { name: 'ship.png', attachment: canvas.toBuffer() }
+      ]
+    })
   }
-} 
+}
 
-function createHeart (image) {
-  const canvas = Canvas.createCanvas(202,202), context = canvas.getContext("2d");
+function createHeart(image) {
+  const canvas = Canvas.createCanvas(202, 202), context = canvas.getContext("2d");
   const size = 200; // Heart size
   const offset = 1; // Distance from wall
-  
-  context.moveTo(offset, offset + size/ 4);
-  context.quadraticCurveTo(offset, offset, offset + size/ 4, offset);
-  context.quadraticCurveTo(offset + size/ 2, offset, offset + size/ 2, offset + size/ 4);
-  context.quadraticCurveTo(offset + size/ 2, offset, offset + size* 3/4, offset);
-  context.quadraticCurveTo(offset + size, offset, offset + size, offset + size/ 4);
-  context.quadraticCurveTo(offset + size, offset + size/ 2, offset + size* 3/4, offset + size* 3/4);
-  context.lineTo(offset + size/ 2, offset + size);
-  context.lineTo(offset + size/ 4, offset + size* 3/4);
-  context.quadraticCurveTo(offset, offset + size/ 2, offset, offset + size/ 4);
+
+  context.moveTo(offset, offset + size / 4);
+  context.quadraticCurveTo(offset, offset, offset + size / 4, offset);
+  context.quadraticCurveTo(offset + size / 2, offset, offset + size / 2, offset + size / 4);
+  context.quadraticCurveTo(offset + size / 2, offset, offset + size * 3 / 4, offset);
+  context.quadraticCurveTo(offset + size, offset, offset + size, offset + size / 4);
+  context.quadraticCurveTo(offset + size, offset + size / 2, offset + size * 3 / 4, offset + size * 3 / 4);
+  context.lineTo(offset + size / 2, offset + size);
+  context.lineTo(offset + size / 4, offset + size * 3 / 4);
+  context.quadraticCurveTo(offset, offset + size / 2, offset, offset + size / 4);
 
   context.stroke();
 
