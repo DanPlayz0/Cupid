@@ -48,6 +48,7 @@ module.exports = class extends Command {
     }
     timeTest = Date.now() - timeTest
 
+    let qualityFind = Date.now();
     let GIFimage = new GIF([...frames]);
     let finalImage = null, lastSize = 0, skip = 0;
     for (let quality of [100, 95, 85, 75, 70, 65, 60, 55, 50]) {
@@ -64,10 +65,10 @@ module.exports = class extends Command {
         break;
       }
     }
+    qualityFind = Date.now() - qualityFind;
     if(finalImage == null) return ctx.sendMsg({ content: "Generated Image was too big to send. Try with another image", message: msg });
-    
 
-    return ctx.sendMsg({content: `Generated in ${timeTest} ms`, files:[
+    return ctx.sendMsg({content: `Generated in ${timeTest} ms | Quality in ${qualityFind} ms`, files:[
       {name: 'hearts.gif', attachment: Buffer.from(finalImage) }
     ], message:msg})
   }
