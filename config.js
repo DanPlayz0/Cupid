@@ -7,11 +7,11 @@ module.exports = {
   admins: ['209796601357533184', '229285505693515776'],
   
   // Database Crap (MongoDB & Redis)
-  mongo_uri: private.mongo_uri,
+  mongo_uri: null, //private.mongo_uri,
   redis: {
     host: private.redis?.host,
     port: private.redis?.port ?? 6379,
-    prefix: "DISCORDBOT:"
+    prefix: "CUPID:"
   },
   
   // Support server. (For the "dashboard.example/join")
