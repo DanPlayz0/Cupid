@@ -84,7 +84,6 @@ const pickupLines = [
   "Are you a camera? Because every time I see you I smile",
   "Is your name Google? Because you have everything I’ve been searching for.",
   "Can I borrow your cell phone? I want to call my mother and tell her I just met the girl of my dreams.",
-  "",
 ];
 
 module.exports = class extends Command {
