@@ -84,6 +84,16 @@ const pickupLines = [
   "Are you a camera? Because every time I see you I smile",
   "Is your name Google? Because you have everything I’ve been searching for.",
   "Can I borrow your cell phone? I want to call my mother and tell her I just met the girl of my dreams.",
+  "Just took a DNA test. Turns out I'm 100% your type.",
+  "Is this the Hogwarts Express? Because it feels like you and I are headed somewhere magical.",
+  "Was that an earthquake, or did you just rock my world.",
+  "If I asked you out on a date, would your answer be the same as your answer to this one?",
+  "Are you my assignment? Cause I'm not doing you but I definitely should be",
+  "Kiss me if I'm wrong. But dinosaurs still exist, right?",
+  "i wanna c_ddle and k_ss. But u and i aren't together",
+  "You must be a high test score. Because I want to take you home and show you to my mother.",
+  "Screw the alphabet, cause U R A Q T.",
+  "One a scale of 1 to 10, you are an 8. And I'm in 2 you.",
 ];
 
 module.exports = class extends Command {
