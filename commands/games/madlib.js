@@ -66,36 +66,6 @@ const stories = {
     text: stripIndents`[User1] had always been a hopeless romantic and had been searching for their soulmate. When they finally met [User2] at [Place], they knew they had found their happily ever after. They fell deeper in love every day, but a twist of fate soon threatened to tear them apart. [User1] was offered a job opportunity in a different city and [User2] had to stay behind. Despite the distance and challenges, they never lost faith in their love. They proved that their love was stronger than anything life could throw at them. They reunited at [Place] and declared their love to the world, exchanging vows and rings made from [Item].`,
     lastUpdate: '02-2023'
   },
-  story7: {
-    name: "Grumpy Valentine",
-    variables: [
-      { name: "Adjective", placeholder: "what the [adjective] deal is" },
-      { name: "Noun", placeholder: "why every [noun] in the" },
-      { name: "Shape", placeholder: "all the [shape] decorations" },
-      { name: "Color", placeholder: "everything is covered in [color]" },
-    ],
-    text: stripIndents`I don't get what the [adjective] deal is... to me,
-    Feb. 14 is just another day. I really don't understand
-    why every [noun] in the world loves this day so
-    much. First of all, there are all the [shape]
-    decorations, and everything is covered in [color]`,
-    lastUpdate: '12-2022'
-  },
-  story8: {
-    name: "Love in Bloom",
-    variables: [
-      { name: "Name", placeholder: "person named [name] decided to" },
-      { name: "Action", placeholder: "They [action] a bouquet of" },
-      { name: "Item", placeholder: "bouquet of [item], and waited" },
-      { name: "Emotion", placeholder: "was overcome with [emotion] and" },
-      { name: "Adjective", placeholder: "believe the [adjective] effort their" },
-    ],
-    text: stripIndents`Once upon a morning on Valentine's Day, a person named [name] decided to surprise their loved one with a gesture. 
-    They [action] a bouquet of [item], and waited anxiously for their partner to arrive home. 
-    When they finally did, the loved one was overcome with [emotion] and couldn't believe the [adjective] effort their partner had put in. 
-    It was a day they would never forget.`,
-    lastUpdate: '12-2022'
-  }
 }
 
 module.exports = class extends Command {
@@ -130,7 +100,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    const storyArg = ctx.args.getString('story')
+    const storyArg = ctx.args.getString('story');
     const story = stories[storyArg];
     if (ctx.args.getString('action') == "preview")
       return ctx.sendMsg(story.text.replace(/(\[[^\]]+\])/g, '**$1**'), { ephemeral: true });
@@ -144,7 +114,7 @@ module.exports = class extends Command {
           {
             type: 4,
             style: 1,
-            custom_id: x.name.toLowerCase(),
+            custom_id: x.id,
             label: x.name,
             placeholder: x.placeholder,
             min_length: 1,
@@ -160,8 +130,8 @@ module.exports = class extends Command {
     if (!story) return ctx.sendMsg("That story seems to have been deleted or no longer exists.", { ephemeral: true })
 
     let storyText = story.text;
-    for (let field of ctx.interaction.fields.fields.values())
-      storyText = storyText.replaceAll(`[${story.variables.find((x) => x.name == field.customId).id}]`, `**${field.value}**`);
+    for (let field of ctx.interaction.fields.fields.values()) 
+      storyText = storyText.replaceAll(`[${field.customId}]`, `**${field.value.trim()}**`);
 
     ctx.sendMsg(storyText);
   }
