@@ -8,7 +8,7 @@ module.exports = class Command {
     this.commandData = {
       name: null,
       description: options.description,
-      options: options.options,
+      options: options?.options ?? [],
       defaultPermissions: options.defaultPermissions,
     }
 
