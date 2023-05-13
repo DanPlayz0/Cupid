@@ -30,7 +30,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    let image1Url = ctx.args.getString('image_url') || ctx.args.getAttachment('image')?.url || ctx.args.getUser("image_user")?.avatarURL({ extension: "png", forceStatic: true });
+    let image1Url = (/^https?:\/\//.test(ctx.args.getString('image_url')) ? ctx.args.getString('image_url') : null) || ctx.args.getAttachment('image')?.url || ctx.args.getUser("image_user")?.avatarURL({ extension: "png", forceStatic: true });
     if (!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
     if (!['png', 'jpg', 'jpeg'].some(x => image1Url.includes('.' + x))) return ctx.sendMsg("Both images must be either `png` or `jpg`");
     const msg = await ctx.sendMsg("Generating...")

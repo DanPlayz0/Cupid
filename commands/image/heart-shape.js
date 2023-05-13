@@ -9,17 +9,17 @@ module.exports = class extends Command {
       options: [
         {
           type: 6,
-          name: "image1_user",
-          description: "The first user you'd like to ship."
+          name: "image_user",
+          description: "The user you'd like to convert."
         },
         {
           type: 3,
-          name: "image1_url",
-          description: "The first url you'd like to ship."
+          name: "image_url",
+          description: "The url you'd like to convert."
         },
         {
           type: 11,
-          name: "image1",
+          name: "image",
           description: "The first image you'd like to ship."
         },
         {
@@ -42,7 +42,7 @@ module.exports = class extends Command {
   }
 
   async run(ctx) {
-    let image1Url = ctx.args.getString('image1_url') || ctx.args.getAttachment('image1')?.url || ctx.args.getUser("image1_user")?.avatarURL({ extension: "png", forceStatic: true });
+    let image1Url = (/^https?:\/\//.test(ctx.args.getString('image_url')) ? ctx.args.getString('image_url') : null) || ctx.args.getAttachment('image')?.url || ctx.args.getUser("image_user")?.avatarURL({ extension: "png", forceStatic: true });
     if (!image1Url) image1Url = ctx.author.avatarURL({ extension: "png", forceStatic: true });
     if (!['png', 'jpg', 'jpeg', 'gif'].some(x => image1Url.includes('.' + x))) return ctx.sendMsg("The image must be either `png` or `jpg` or `gif`");
 
