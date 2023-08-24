@@ -1,19 +1,8 @@
-FROM node:lts-alpine
+FROM node:lts-hydrogen
 
 # Install build dependencies for native modules
-RUN apk update && apk add --no-cache \
-    python2 \
-    make \
-    g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    bash \
-    imagemagick \
-    fontconfig-dev
-
-# Install fonts and fontconfig
-RUN apk add --no-cache ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family fontconfig
+RUN apt-get update -y
+RUN apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 # Create the directory!
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
