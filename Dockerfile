@@ -1,5 +1,4 @@
 FROM node:lts-alpine
-RUN apk add python make gcc g++
 
 # Create the directory!
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
@@ -8,7 +7,9 @@ WORKDIR /home/node/app
 # Copy and install our app
 COPY package*.json ./
 USER node
-RUN npm install
+RUN apk add --no-cache make gcc g++ python && \
+  npm install --production --silent && \
+  apk del make gcc g++ python
 
 # Copy the app's files
 COPY --chown=node:node . .
