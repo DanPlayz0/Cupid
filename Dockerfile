@@ -1,12 +1,23 @@
 FROM node:lts-alpine
-RUN apk --no-cache add --virtual .builds-deps build-base python3
 
 # Create the directory!
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
-# Copy and install our app
+# Copy the app's package.json
 COPY package*.json ./
+
+# Canvas Dependencies
+RUN apk add --no-cache \
+  build-base \
+  g++ \
+  cairo-dev \
+  jpeg-dev \
+  pango-dev \
+  giflib-dev
+RUN apk add --update  --repository http://dl-3.alpinelinux.org/alpine/edge/testing libmount ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family fontconfig
+
+# Install the app
 USER node
 RUN npm install --production --silent
 
