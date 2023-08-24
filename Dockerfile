@@ -1,4 +1,5 @@
 FROM node:lts-alpine
+RUN apk --no-cache add --virtual .builds-deps build-base python3
 
 # Create the directory!
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
@@ -7,9 +8,7 @@ WORKDIR /home/node/app
 # Copy and install our app
 COPY package*.json ./
 USER node
-RUN apk add --no-cache make gcc g++ python && \
-  npm install --production --silent && \
-  apk del make gcc g++ python
+RUN npm install --production --silent
 
 # Copy the app's files
 COPY --chown=node:node . .
