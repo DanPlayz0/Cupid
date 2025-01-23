@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   app:
     build:
@@ -6,10 +5,9 @@ services:
       dockerfile: './Dockerfile'
     network_mode: bridge
     ports:
-      - '9005:3000'
+      - 3000
     environment:
       DISCORD_TOKEN: ${DISCORD_TOKEN} # Discord bot token
-      MONGODB_URI: ${MONGODB_URI} # 'mongodb://username:password@localhost:27017/forumfollow?authSource=admin&retryWrites=true&ssl=false'
       WEBHOOK_SHARD: ${WEBHOOK_SHARD} # Discord webhook url
       WEBHOOK_ERROR: ${WEBHOOK_ERROR} # Discord webhook url
       WEBHOOK_COMMAND: ${WEBHOOK_COMMAND} # Discord webhook url
