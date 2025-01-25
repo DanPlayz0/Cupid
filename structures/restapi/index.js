@@ -28,7 +28,7 @@ module.exports = class RestAPI {
       console.log(`[RestAPI] ${req.method} ${req.url}`);
       next();
     })
-    this.express.use("/v1", require(`@structures/restapi/v1/index.js`));
+    this.express.use("/v1", require(`./v1/index.js`));
     return this;
   }
 
