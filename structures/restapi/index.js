@@ -18,6 +18,7 @@ module.exports = class RestAPI {
   }
 
   listen(port) {
+    console.log(`[RestAPI] Listening on port ${port}`);
     var server = this.express.listen(port);
     return server;
   }
