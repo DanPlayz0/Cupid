@@ -9,7 +9,6 @@ module.exports = class extends Event {
   }
 
   async run(client, guild) {
-    if(!guild.available) return;
     console.log(`[GUILD LEAVE] ${guild.name} (${guild.id}) removed the bot.`);
 
     const owner = await client.users.fetch(guild.ownerId);

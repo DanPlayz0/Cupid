@@ -40,7 +40,7 @@
     const newOptions = Object.assign({
       content: typeof content === 'string' ? content : undefined,
       embeds: content instanceof this.MessageEmbed ? [content] : [],
-      fetchReply: true
+      withResponse: true
     }, options);
 
     let msg;
