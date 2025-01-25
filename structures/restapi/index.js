@@ -24,6 +24,10 @@ module.exports = class RestAPI {
   }
 
   loadRoutes() {
+    this.express.use((req,res,next) => {
+      console.log(`[RestAPI] ${req.method} ${req.url}`);
+      next();
+    })
     this.express.use("/v1", require(`@structures/restapi/v1/index.js`));
     return this;
   }
