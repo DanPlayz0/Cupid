@@ -24,6 +24,7 @@ module.exports = class RestAPI {
   }
 
   loadRoutes() {
+    console.log(`[RestAPI] Loading routes...`);
     this.express.use((req,res,next) => {
       console.log(`[RestAPI] ${req.method} ${req.url}`);
       next();
@@ -33,6 +34,7 @@ module.exports = class RestAPI {
   }
 
   loadErrorHandler() {
+    console.log(`[RestAPI] Loading error handler...`);
     this.express.use((error, _req, res, _next) => {
       const { message, statusCode = 500 } = error;
       if (statusCode >= 500) console.error(error);
